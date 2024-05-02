@@ -6,6 +6,12 @@ import (
 	"testing"
 )
 
+func TestTerraformValidation(t *testing.T) {
+    terraformOptions := &terraform.Options{
+        // Path to the Terraform code directory
+        TerraformDir: "..",
+    }
+    
 func TestTerraform(t *testing.T) {
 	t.Parallel()
 
