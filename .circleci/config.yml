@@ -84,6 +84,7 @@ jobs:
           command: |
             # Initialize the Go environment and download dependencies
             cd test
+            go mod init terraform_test.go # Initialize if not already initialized
             go mod tidy
             # Execute the Terratest
             go test -v ./...
