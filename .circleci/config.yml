@@ -105,6 +105,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
           name: Install Dependencies
           command: |
             apt-get update
