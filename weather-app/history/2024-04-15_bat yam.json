@@ -1,0 +1,39 @@
+{
+    "bat yam": {
+        "2024-04-15": {
+            "max_temp": 22.7,
+            "min_temp": 17.5,
+            "humidity": 80
+        },
+        "2024-04-16": {
+            "max_temp": 23.0,
+            "min_temp": 16.4,
+            "humidity": 82
+        },
+        "2024-04-17": {
+            "max_temp": 29.6,
+            "min_temp": 17.4,
+            "humidity": 54
+        },
+        "2024-04-18": {
+            "max_temp": 26.7,
+            "min_temp": 19.8,
+            "humidity": 61
+        },
+        "2024-04-19": {
+            "max_temp": 22.4,
+            "min_temp": 17.9,
+            "humidity": 78
+        },
+        "2024-04-20": {
+            "max_temp": 22.3,
+            "min_temp": 16.8,
+            "humidity": 73
+        },
+        "2024-04-21": {
+            "max_temp": 22.9,
+            "min_temp": 16.4,
+            "humidity": 72
+        }
+    }
+}

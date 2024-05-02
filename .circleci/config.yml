@@ -1,0 +1,131 @@
+version: 2.1
+
+jobs:
+  build_and_test:
+    docker:
+      - image: cimg/base:2024.02
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install Python and pip
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y python3 python3-pip
+            python3 -m pip install --upgrade pip
+      - run:
+          name: Install project dependencies
+          command: |
+            pip3 install -r requirements.txt
+          working_directory: weather-app
+      - run:
+          name: Build Docker Image
+          command: |
+            ls -la
+            docker build -t shaysardam/circle-ci:${CIRCLE_SHA1} .
+          working_directory: weather-app
+      - run:
+          name: Run Application Tests
+          command: |
+            docker run -d --name app -p 8000:8000 shaysardam/circle-ci:${CIRCLE_SHA1}
+            sleep 10
+            docker exec app python3 test_unit.py
+      - run:
+          name: Send Test Report to Discord
+          command: |
+            TEST_RESULTS=$(docker logs app)
+            curl -H "Content-Type: application/json" \
+                -d "{\"content\": \"Test Results: $TEST_RESULTS\"}" \
+                $DISCORD_WEBHOOK_URL
+      - run:
+          name: Login to Docker Hub
+          command: |
+            echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+      - run:
+          name: Push Docker Image to Docker Hub
+          command: |
+            docker push shaysardam/circle-ci:${CIRCLE_SHA1}
+
+  # run_terratest:
+  #   docker:
+  #     - image: cimg/base:2024.02
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Testing using tfsec and checkov
+  #         command: |
+  #           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+  #           tfsec .
+  #         working_directory: terraform
+  run_terratest:
+    docker:
+      - image: cimg/go:1.18  # CircleCI's Go image
+    steps:
+      - checkout
+      - run:
+          name: Install Terraform
+          command: |
+            # Install required packages for adding repository
+            sudo apt-get update
+            sudo apt-get install -y gnupg software-properties-common curl
+            # Add the HashiCorp GPG key
+            curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+            # Add the official HashiCorp Linux repository
+            sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+            # Update and install Terraform
+            sudo apt-get update && sudo apt-get install terraform
+      - run:
+          name: Setup Go environment and run tests
+          command: |
+            # Initialize the Go environment and download dependencies
+            cd test
+            go mod tidy
+            # Execute the Terratest
+            go test -v ./...
+
+  checkov_scan:
+    docker:
+      - image: bridgecrew/checkov:latest
+    steps:
+      - checkout
+      - run:
+          name: Run Checkov with Specific Checks
+          command: |
+            checkov -d ./terraform
+
+  deploy_terraform:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - checkout
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_DEFAULT_REGION
+      - run:
+          name: Terraform Init
+          command: terraform init
+          working_directory: terraform
+      - run:
+          name: Terraform Plan
+          command: terraform plan
+          working_directory: terraform
+      # - run:
+      #     name: Terraform Apply
+      #     command: terraform apply --auto-approve
+      #     working_directory: terraform
+
+
+workflows:
+  version: 2
+  build_test_and_deploy:
+    jobs:
+      - build_and_test
+      - checkov_scan
+      - run_terratest:
+          requires:
+            - checkov_scan
+      - deploy_terraform:
+          requires:
+            - run_terratest
+            - checkov_scan

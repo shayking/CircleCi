@@ -1,0 +1,39 @@
+{
+    "negba": {
+        "2024-04-09": {
+            "max_temp": 20.4,
+            "min_temp": 13.4,
+            "humidity": 80
+        },
+        "2024-04-10": {
+            "max_temp": 19.4,
+            "min_temp": 14.7,
+            "humidity": 85
+        },
+        "2024-04-11": {
+            "max_temp": 21.9,
+            "min_temp": 13.5,
+            "humidity": 83
+        },
+        "2024-04-12": {
+            "max_temp": 21.7,
+            "min_temp": 12.3,
+            "humidity": 84
+        },
+        "2024-04-13": {
+            "max_temp": 22.5,
+            "min_temp": 14.0,
+            "humidity": 85
+        },
+        "2024-04-14": {
+            "max_temp": 22.6,
+            "min_temp": 14.6,
+            "humidity": 84
+        },
+        "2024-04-15": {
+            "max_temp": 22.7,
+            "min_temp": 15.4,
+            "humidity": 85
+        }
+    }
+}

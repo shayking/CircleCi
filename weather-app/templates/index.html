@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather up changed</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: {{ bg_color }};
+        }
+    </style>
+</head>
+
+    <body style="text-align: center">
+
+        <h1 style="margin: 60px">Get your weather forcast</h1>
+
+        <!-- Button to redirect to the /history path -->
+        <form action="/history" style="text-align: center;margin-top: 20px; margin-bottom: 80px">
+            <button type="submit" class="btn btn-primary">View Search History</button>
+        </form>
+
+<!--        form for post and send the user input-->
+        <form method="post">
+            Enter country or city: <input name="search">
+            <button type="submit" class="btn btn-outline-success">submit</button>
+            <br>
+            <br>
+        </form>
+        <form action="/download" style="text-align: center;margin-top: 20px; margin-bottom: 80px">
+            <button type="submit" class="btn btn-primary">Download sky image API</button>
+        </form>
+        <form action="/dynamoDB" style="text-align: center;margin-top: 20px; margin-bottom: 80px">
+            <button type="submit" class="btn btn-primary">send details to dynamoDB</button>
+        </form>
+
+<!--        happen just after the post-->
+        {% if method == 'post' %}
+<!--        ret is the user input-->
+                <h1>this is the temperature details for {{ret}}, {{country}}</h1>
+<!--                allocate the details in line -->
+                <div class="d-flex flex-warp">
+                {%for date in dictionary %}
+
+                 <div class="card" style="width: 13rem; margin: 15px">
+                    <b>date: {{ date }} </b>
+                    <br>
+                    max temp: {{ dictionary[date]['max_temp'] }}&#8451
+                    <br>
+                    min temp: {{ dictionary[date]['min_temp'] }}&#8451
+                    <br>
+                    humidity: {{ dictionary[date]['humidity'] }}%
+                    <br>
+                </div>
+                    <br>
+                {%endfor%}
+                </div>
+        {% endif %}
+        {% if text == 'not succeed' %}
+            <div>insert valid city or country</div>
+        {% endif %}
+    </body>
+</html>
