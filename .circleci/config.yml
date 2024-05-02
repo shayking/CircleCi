@@ -87,7 +87,7 @@ jobs:
             go mod init terraform_test.go # Initialize if not already initialized
             go mod tidy
             # Execute the Terratest
-            go test 
+            go test -v
 
   checkov_scan:
     docker:
