@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  terraform: circleci/terraform@3.2.1
+  aws-cli: circleci/aws-cli@2.0.6
 
 jobs:
   build_and_test:
@@ -116,6 +116,7 @@ jobs:
           name: Terraform Plan
           command: terraform plan
           working_directory: terraform
+
       # - run:
       #     name: Terraform Apply
       #     command: terraform apply --auto-approve
