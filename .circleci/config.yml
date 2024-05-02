@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@2.0.6
-  
+
 jobs:
   build_and_test:
     docker:
@@ -59,31 +59,34 @@ jobs:
   #           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
   #           tfsec .
   #         working_directory: terraform
-  run_terratest:
-    docker:
-      - image: cimg/go:1.18  # CircleCI's Go image
-    steps:
-      - checkout
-      - run:
-          name: Install Terraform
-          command: |
-            # Install required packages for adding repository
-            sudo apt-get update
-            sudo apt-get install -y gnupg software-properties-common curl
-            # Add the HashiCorp GPG key
-            curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-            # Add the official HashiCorp Linux repository
-            sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-            # Update and install Terraform
-            sudo apt-get update && sudo apt-get install terraform
-      - run:
-          name: Setup Go environment and run tests
-          command: |
-            # Initialize the Go environment and download dependencies
-            cd test
-            go mod tidy
-            # Execute the Terratest
-            go test -v ./...
+run_terratest:
+  docker:
+    - image: cimg/go:1.18  # CircleCI's Go image
+  steps:
+    - checkout
+    - run:
+        name: Install Terraform
+        command: |
+          # Install required packages
+          sudo apt-get update
+          sudo apt-get install -y gnupg software-properties-common curl ca-certificates lsb-release
+          
+          # Download the HashiCorp GPG key
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          
+          # Set up the repository
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          
+          # Update and install Terraform
+          sudo apt-get update && sudo apt-get install terraform
+    - run:
+        name: Setup Go environment and run tests
+        command: |
+          # Initialize the Go environment and download dependencies
+          cd test
+          go mod tidy
+          # Execute the Terratest
+          go test -v ./...
 
   checkov_scan:
     docker:
