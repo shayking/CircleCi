@@ -99,23 +99,23 @@ jobs:
           command: |
             checkov -d ./terraform
 
-  deploy_terraform:
-    docker:
-      - image: cimg/aws:2024.03.1
-    steps:
-      - checkout
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_DEFAULT_REGION
-      - run:
-          name: Terraform Init
-          command: terraform init
-          working_directory: terraform
-      - run:
-          name: Terraform Plan
-          command: terraform plan
-          working_directory: terraform
+  # deploy_terraform:
+  #   docker:
+  #     - image: cimg/aws:2024.03.1
+  #   steps:
+  #     - checkout
+  #     - aws-cli/setup:
+  #         aws-access-key-id: AWS_ACCESS_KEY_ID
+  #         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+  #         aws-region: AWS_DEFAULT_REGION
+  #     - run:
+  #         name: Terraform Init
+  #         command: terraform init
+  #         working_directory: terraform
+  #     - run:
+  #         name: Terraform Plan
+  #         command: terraform plan
+  #         working_directory: terraform
 
       # - run:
       #     name: Terraform Apply
