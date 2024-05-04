@@ -8,7 +8,7 @@ import os
 from botocore.exceptions import ClientError
 import json
 
-app = Flask(__name__)  # create object flask and assign it to app
+app = Flask(__name__)  # create object flask and assign it to application
 
 bg_color = os.getenv('BG_COLOR', 'white')
 print(bg_color)
