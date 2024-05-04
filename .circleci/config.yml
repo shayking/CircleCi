@@ -61,7 +61,7 @@ jobs:
   #         working_directory: terraform
   run_terratest:
     docker:
-      - image: cimg/go:1.18  # CircleCI's Go image
+      - image: cimg/go:1.18  # CircleCI's Go img
     steps:
       - checkout
       - run:
