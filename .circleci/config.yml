@@ -132,7 +132,7 @@ workflows:
       - run_terratest:
           requires:
             - checkov_scan
-      - deploy_terraform:
-          requires:
-            - run_terratest
-            - checkov_scan
+      # - deploy_terraform:
+      #     requires:
+      #       - run_terratest
+      #       - checkov_scan
