@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-provider "awsxzx" {
+provider "aws" {
   region = local.region
 }
 
