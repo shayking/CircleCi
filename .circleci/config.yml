@@ -35,9 +35,10 @@ jobs:
       - run:
           name: Send Test Report to Discord
           command: |
-            TEST_RESULTS=$(cat test_results.txt | jq -aRs .)
+            TEST_RESULTS=$(cat test_results.txt)
+            JSON_PAYLOAD=$(echo "$TEST_RESULTS" | jq -Rs '{content: .}')
             curl -H "Content-Type: application/json" \
-                -d "{\"content\": \"Test Results: $TEST_RESULTS\"}" \
+                -d "$JSON_PAYLOAD" \
                 $DISCORD_WEBHOOK_URL
       - run:
           name: Login to Docker Hub
