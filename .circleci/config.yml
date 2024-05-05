@@ -13,7 +13,7 @@ jobs:
           name: Install Python and pip
           command: |
             sudo apt-get update
-            sudo apt-get install -y python3 python3-pip jq
+            sudo apt-get install -y python3 python3-pip
             python3 -m pip install --upgrade pip
       - run:
           name: Install project dependencies
@@ -31,14 +31,13 @@ jobs:
           command: |
             docker run -d --name app -p 8000:8000 shaysardam/circle-ci:${CIRCLE_SHA1}
             sleep 10
-            docker exec app python3 test_unit.py > test_results.txt
+            docker exec app python3 test_unit.py 
       - run:
           name: Send Test Report to Discord
           command: |
-            TEST_RESULTS=$(cat test_results.txt)
-            JSON_PAYLOAD=$(echo "$TEST_RESULTS" | jq -Rs '{content: .}')
+            TEST_RESULTS=$(docker logs app)
             curl -H "Content-Type: application/json" \
-                -d "$JSON_PAYLOAD" \
+                -d "{\"content\": \"Test Results: $TEST_RESULTS\"}" \
                 $DISCORD_WEBHOOK_URL
       - run:
           name: Login to Docker Hub
@@ -115,12 +114,14 @@ jobs:
           working_directory: terraform
       - run:
           name: Terraform Plan
-          command: terraform plan
+          command: terraform plan -var 'image_tag=${CIRCLE_SHA1}'
           working_directory: terraform
 
       # - run:
-      #     name: Terraform Apply
-      #     command: terraform apply --auto-approve
+      #     name: Deploy via Terraform
+      #     command: |
+      #       export TF_VAR_image_tag="${CIRCLE_SHA1}"
+      #       terraform apply -auto-approve -var 'image_tag=${CIRCLE_SHA1}'
       #     working_directory: terraform
 
 
