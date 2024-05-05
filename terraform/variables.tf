@@ -47,7 +47,12 @@ variable vpc_cidr {
 }
 
 variable "image_tag" {
-  type        = string
-  description = "The tag of the Docker image to be used."
-  default     = "latest"
+  type    = string
+  default = "latest"
+}
+
+
+variable "REPO_PAT" {
+  type = string
+  sensitive   = true
 }
