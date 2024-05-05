@@ -46,3 +46,8 @@ variable vpc_cidr {
   default     = "10.0.0.0/16"
 }
 
+variable "image_tag" {
+  type        = string
+  description = "The tag of the Docker image to be used."
+  default     = "latest"
+}

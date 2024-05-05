@@ -4,7 +4,6 @@ variable "image_tag" {
 
 module "argocd_application" {
   source  = "git::https://github.com/project-octal/terraform-kubernetes-argocd-application.git?ref=50d4a0205efc06269a0c5453572743a5d720edbd"
-  version = "2.0.0"
 
   argocd_namespace    = "argocd"
   destination_server  = "https://kubernetes.default.svc"
