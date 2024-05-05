@@ -13,7 +13,7 @@ jobs:
           name: Install Python and pip
           command: |
             sudo apt-get update
-            sudo apt-get install -y python3 python3-pip
+            sudo apt-get install -y python3 python3-pip jq
             python3 -m pip install --upgrade pip
       - run:
           name: Install project dependencies
@@ -31,11 +31,11 @@ jobs:
           command: |
             docker run -d --name app -p 8000:8000 shaysardam/circle-ci:${CIRCLE_SHA1}
             sleep 10
-            docker exec app python3 test_unit.py
+            docker exec app python3 test_unit.py > test_results.txt
       - run:
           name: Send Test Report to Discord
           command: |
-            TEST_RESULTS=$(docker logs app)
+            TEST_RESULTS=$(cat test_results.txt | jq -aRs .)
             curl -H "Content-Type: application/json" \
                 -d "{\"content\": \"Test Results: $TEST_RESULTS\"}" \
                 $DISCORD_WEBHOOK_URL
