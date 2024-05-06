@@ -59,4 +59,5 @@ variable "cluster_name" {
 variable "image_tag" {
   description = "The tag of the Docker image to be used."
   default = "latest"
+  type        = string
 }
