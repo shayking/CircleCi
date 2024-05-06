@@ -112,10 +112,10 @@ jobs:
           name: Terraform Init
           command: terraform init
           working_directory: terraform
-      - run:
-          name: Terraform Plan
-          command: terraform plan -var 'image_tag=${CIRCLE_SHA1}'
-          working_directory: terraform
+      # - run:
+      #     name: Terraform Plan
+      #     command: terraform plan -var 'image_tag=${CIRCLE_SHA1}'
+      #     working_directory: terraform
 
       - run:
           name: Deploy via Terraform
