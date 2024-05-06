@@ -22,7 +22,7 @@
 # }
 resource "helm_release" "weatherapp" {
   name       = "weatherapp"
-  repository = "https://${var.REPO_PAT}@github.com/shayking/gitops"
+  repository = "https://${var.REPO_PAT}@github.com/shayking/gitops/application"
   chart      = "application"
   version    = "0.1.0"
   namespace = "argocd"
