@@ -27,3 +27,4 @@ resource "helm_release" "weatherapp" {
   version    = "0.1.0"
   namespace = "argocd"
 }
+# 
