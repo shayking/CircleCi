@@ -1,7 +1,7 @@
 module "eks" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=afadb14e44d1cdbd852dbae815be377c4034e82a"
   
-  cluster_name    = "my-cluster"
+  cluster_name    = var.cluster_name
   cluster_version = "1.23"
 
   cluster_endpoint_private_access = true
@@ -26,28 +26,28 @@ module "eks" {
         role = "general"
       }
 
-      instance_types = ["t3.small"]
+      instance_types = ["t3.medium"]
       capacity_type  = "ON_DEMAND"
     }
 
-    spot = {
-      desired_size = 1
-      min_size     = 1
-      max_size     = 10
+  #   spot = {
+  #     desired_size = 1
+  #     min_size     = 1
+  #     max_size     = 10
 
-      labels = {
-        role = "spot"
-      }
+  #     labels = {
+  #       role = "spot"
+  #     }
 
-      taints = [{
-        key    = "market"
-        value  = "spot"
-        effect = "NO_SCHEDULE"
-      }]
+  #     taints = [{
+  #       key    = "market"
+  #       value  = "spot"
+  #       effect = "NO_SCHEDULE"
+  #     }]
 
-      instance_types = ["t3.micro"]
-      capacity_type  = "SPOT"
-    }
+  #     instance_types = ["t3.micro"]
+  #     capacity_type  = "SPOT"
+  #   }
   }
 
   # node_security_group_additional_rules = {

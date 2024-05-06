@@ -108,6 +108,10 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_DEFAULT_REGION
+      # - run:
+      #     name: Clone Repository
+      #     command: |
+      #       git clone https://${var.REPO_PAT}@github.com/shayking/gitops
       - run:
           name: Terraform Init
           command: terraform init

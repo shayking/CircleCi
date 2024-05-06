@@ -46,10 +46,6 @@ variable vpc_cidr {
   default     = "10.0.0.0/16"
 }
 
-variable "image_tag" {
-  type    = string
-  default = "latest"
-}
 
 
 variable "REPO_PAT" {
@@ -59,4 +55,7 @@ variable "REPO_PAT" {
 variable "cluster_name" {
   description = "Name of the EKS cluster"
   default     = "my-cluster"  # Default value
+}
+variable "image_tag" {
+  description = "The tag of the Docker image to be used."
 }
