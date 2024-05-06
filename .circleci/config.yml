@@ -117,12 +117,12 @@ jobs:
           command: terraform plan -var 'image_tag=${CIRCLE_SHA1}'
           working_directory: terraform
 
-      # - run:
-      #     name: Deploy via Terraform
-      #     command: |
-      #       export TF_VAR_image_tag="${CIRCLE_SHA1}"
-      #       terraform apply -auto-approve -var 'image_tag=${CIRCLE_SHA1}'
-      #     working_directory: terraform
+      - run:
+          name: Deploy via Terraform
+          command: |
+            export TF_VAR_image_tag="${CIRCLE_SHA1}"
+            terraform apply -auto-approve -var 'image_tag=${CIRCLE_SHA1}'
+          working_directory: terraform
 
 
 workflows:
