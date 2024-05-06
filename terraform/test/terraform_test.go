@@ -22,10 +22,10 @@ func TestTerraform(t *testing.T) {
 		t.Errorf("Error running terraform validate: %v\nOutput:\n%s", err, string(out))
 	}
 
-	// cmd = exec.Command("terraform", "plan")
-	// cmd.Dir = ".."
-	// out, err = cmd.CombinedOutput()
-	// if err != nil {
-	// 	t.Errorf("Error running terraform plan: %v\nOutput:\n%s", err, string(out))
-	// }
+	cmd = exec.Command("terraform", "plan")
+	cmd.Dir = ".."
+	out, err = cmd.CombinedOutput()
+	if err != nil {
+		t.Errorf("Error running terraform plan: %v\nOutput:\n%s", err, string(out))
+	}
 }

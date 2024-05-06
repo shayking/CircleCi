@@ -1,7 +1,7 @@
 module "eks" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=afadb14e44d1cdbd852dbae815be377c4034e82a"
   
-  cluster_name    = "my-eks"
+  cluster_name    = "my-cluster"
   cluster_version = "1.23"
 
   cluster_endpoint_private_access = true
