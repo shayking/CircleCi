@@ -1,3 +1,9 @@
+data "aws_eks_cluster" "default" {
+  name = var.cluster_name
+
+  depends_on = [module.eks]
+}
+
 provider "helm" {
   kubernetes {
     host                   = data.aws_eks_cluster.default.endpoint
@@ -21,3 +27,4 @@ provider "kubernetes" {
     command     = "aws"
   }
 }
+

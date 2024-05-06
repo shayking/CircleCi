@@ -56,3 +56,7 @@ variable "REPO_PAT" {
   type = string
   sensitive   = true
 }
+variable "cluster_name" {
+  description = "Name of the EKS cluster"
+  default     = "my-cluster"  # Default value
+}
